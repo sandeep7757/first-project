@@ -1,0 +1,50 @@
+{
+    "variables": {
+      "aws_access_key": "",
+      "aws_secret_key": "",
+      "source_ami": "",
+      "date_stamp": "",
+      "name": ""
+    },
+    "builders": [{
+      "type": "amazon-ebs",
+      "ami_block_device_mappings": [
+          {
+            "device_name": "/dev/xvda",
+            "volume_type": "gp2",
+            "volume_size": "20"
+          }
+        ],
+      "ssh_pty" : true,
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "vpc_id": "",
+      "subnet_id": "",
+      "region": "",
+      "source_ami": "{{user `source_ami`}}",
+      "instance_type": "t2.small",
+      "security_group_id": "",
+      "ami_name": "{{user `name`}}_{{user `date_stamp`}}",
+      "ami_regions" : "",
+      "ssh_username": "",
+      "run_tags": {
+          "ChargeCode": "name",
+          "Product": "infracoe.packer",
+          "Role": "Packer"
+       }
+     }],
+    "provisioners" : [
+      { "type": "shell",
+        "inline": [
+          "sudo yum upgrade kernel -y",
+          "sudo yum install yum-utils -y",
+          "sudo yum install git -y"
+    
+      ]
+   },
+  {  "type": "shell",
+        "inline": [
+          "sudo yum install wget -y"
+    ]
+  }
+  ]}
